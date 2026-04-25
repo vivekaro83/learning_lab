@@ -1,0 +1,48 @@
+openapi: "3.0.0"
+info:
+  title: "ServiceNow RITM API"
+  version: "1.0.0"
+servers:
+  - url: "https://stgservice-management.wolterskluwer.com/api/now"
+paths:
+  /table/sc_req_item:
+    get:
+      operationId: getRITMDetails
+      summary: "Fetch RITM records from ServiceNow"
+      parameters:
+        - name: number
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "RITM number e.g. RITM0012345"
+        - name: sysparm_query
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "ServiceNow encoded query string"
+        - name: sysparm_fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Comma-separated fields to return e.g. number,short_description,state"
+        - name: sysparm_limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: "List of RITM records"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: object
