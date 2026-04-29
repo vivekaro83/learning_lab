@@ -3,37 +3,38 @@ info:
   title: "ServiceNow RITM API"
   version: "1.0.0"
 servers:
-  - url: "https://stgwolterskluwer.service-now.com/api/now/"
+  - url: "https://stgwolterskluwer.service-now.com/api/now"
 paths:
   /table/sc_req_item:
     get:
       operationId: getRITMDetails
-      summary: "Fetch RITM records from ServiceNow"
+      summary: "Fetch RITM records from ServiceNow by RITM number or query"
       parameters:
-        - name: number
-          in: query
-          required: false
-          schema:
-            type: string
-          description: "RITM number e.g. RITM0012345"
         - name: sysparm_query
           in: query
           required: false
           schema:
             type: string
-          description: "ServiceNow encoded query string"
+          description: "ServiceNow encoded query. To fetch a specific RITM use: number=RITM1822110"
         - name: sysparm_fields
           in: query
           required: false
           schema:
             type: string
-          description: "Comma-separated fields to return e.g. number,short_description,state"
+          description: "Comma-separated fields e.g. number,short_description,state,approval,assigned_to"
         - name: sysparm_limit
           in: query
           required: false
           schema:
             type: integer
             default: 10
+        - name: sysparm_display_value
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "true"
+          description: "Return display values instead of sys_ids. Always set to true."
       responses:
         "200":
           description: "List of RITM records"
