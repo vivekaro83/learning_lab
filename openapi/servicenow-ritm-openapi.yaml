@@ -3,7 +3,7 @@ info:
   title: "ServiceNow RITM API"
   version: "1.0.0"
 servers:
-  - url: "https://stgwolterskluwer.service-now.com/api/now"
+  - url: "stgservice-management.wolterskluwer.com/api/now"
 paths:
   /table/sc_req_item:
     get:
