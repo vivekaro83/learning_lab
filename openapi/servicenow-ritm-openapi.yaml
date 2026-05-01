@@ -1,63 +1,63 @@
-openapi: 3.0.3
+openapi: "3.0.3"
 info:
-  title: ServiceNow RITM Lookup API
-  version: 1.0.0
-  description: Fetch ServiceNow Requested Item records from sc_req_item.
+  title: "ServiceNow RITM Lookup API"
+  version: "1.0.0"
+  description: "Fetch ServiceNow Requested Item records from sc_req_item."
 
 servers:
-  - url: https://stgservice-management.wolterskluwer.com/api/now
+  - url: "https://stgservice-management.wolterskluwer.com/api/now"
 
 paths:
   /table/sc_req_item:
     get:
-      operationId: getRITMDetails
-      summary: Get RITM details
-      description: Fetch one or more Requested Item records using a ServiceNow encoded query.
+      operationId: "getRITMDetails"
+      summary: "Get RITM details"
+      description: "Fetch one or more Requested Item records using a ServiceNow encoded query."
       parameters:
-        - name: sysparm_query
-          in: query
+        - name: "sysparm_query"
+          in: "query"
           required: true
-          description: ServiceNow encoded query. Example: number=RITM1822110
+          description: "ServiceNow encoded query. Example: number=RITM1822110"
           schema:
-            type: string
-            example: number=RITM1822110
+            type: "string"
+            example: "number=RITM1822110"
 
-        - name: sysparm_fields
-          in: query
+        - name: "sysparm_fields"
+          in: "query"
           required: false
-          description: Comma-separated list of fields to return.
+          description: "Comma-separated list of fields to return."
           schema:
-            type: string
-            example: number,short_description,description,state,approval,stage,assigned_to,assignment_group,requested_for,opened_by,opened_at,sys_created_on,sys_updated_on,due_date,priority,impact,urgency,cat_item,request,comments,work_notes,close_notes,active,upon_approval,upon_reject
+            type: "string"
+            example: "number,short_description,description,state,approval,stage,assigned_to,assignment_group,requested_for,opened_by,opened_at,sys_created_on,sys_updated_on,due_date,priority,impact,urgency,cat_item,request,comments,work_notes,close_notes,active,upon_approval,upon_reject"
 
-        - name: sysparm_limit
-          in: query
+        - name: "sysparm_limit"
+          in: "query"
           required: false
-          description: Maximum number of records to return.
+          description: "Maximum number of records to return."
           schema:
-            type: integer
+            type: "integer"
             default: 1
             minimum: 1
             maximum: 100
 
-        - name: sysparm_display_value
-          in: query
+        - name: "sysparm_display_value"
+          in: "query"
           required: false
-          description: Return display values instead of raw sys_ids.
+          description: "Return display values instead of raw sys_ids."
           schema:
-            type: string
+            type: "string"
             enum:
               - "true"
               - "false"
-              - all
+              - "all"
             default: "true"
 
-        - name: sysparm_exclude_reference_link
-          in: query
+        - name: "sysparm_exclude_reference_link"
+          in: "query"
           required: false
-          description: Exclude reference links from returned reference fields.
+          description: "Exclude reference links from returned reference fields."
           schema:
-            type: string
+            type: "string"
             enum:
               - "true"
               - "false"
@@ -65,71 +65,21 @@ paths:
 
       responses:
         "200":
-          description: Matching RITM records.
+          description: "Matching RITM records."
           content:
             application/json:
               schema:
-                type: object
+                type: "object"
                 properties:
                   result:
-                    type: array
+                    type: "array"
                     items:
-                      type: object
-                      properties:
-                        number:
-                          type: string
-                        short_description:
-                          type: string
-                        description:
-                          type: string
-                        state:
-                          type: string
-                        approval:
-                          type: string
-                        stage:
-                          type: string
-                        assigned_to:
-                          type: string
-                        assignment_group:
-                          type: string
-                        requested_for:
-                          type: string
-                        opened_by:
-                          type: string
-                        opened_at:
-                          type: string
-                        sys_created_on:
-                          type: string
-                        sys_updated_on:
-                          type: string
-                        due_date:
-                          type: string
-                        priority:
-                          type: string
-                        impact:
-                          type: string
-                        urgency:
-                          type: string
-                        cat_item:
-                          type: string
-                        request:
-                          type: string
-                        comments:
-                          type: string
-                        work_notes:
-                          type: string
-                        close_notes:
-                          type: string
-                        active:
-                          type: string
-                        upon_approval:
-                          type: string
-                        upon_reject:
-                          type: string
+                      type: "object"
+                      additionalProperties: true
 
         "401":
-          description: Authentication failed.
+          description: "Authentication failed."
         "403":
-          description: Forbidden by ServiceNow ACL.
+          description: "Forbidden by ServiceNow ACL."
         "404":
-          description: Endpoint not found.
+          description: "Endpoint not found."
