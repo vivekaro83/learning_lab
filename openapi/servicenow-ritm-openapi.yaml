@@ -2,7 +2,6 @@ openapi: "3.0.3"
 info:
   title: "ServiceNow RITM Lookup API"
   version: "1.0.0"
-  description: "Fetch ServiceNow Requested Item records from sc_req_item."
 
 servers:
   - url: "https://stgservice-management.wolterskluwer.com/api/now"
@@ -12,56 +11,47 @@ paths:
     get:
       operationId: "getRITMDetails"
       summary: "Get RITM details"
-      description: "Fetch one or more Requested Item records using a ServiceNow encoded query."
       parameters:
         - name: "sysparm_query"
           in: "query"
           required: true
-          description: "ServiceNow encoded query. Example: number=RITM1822110"
           schema:
             type: "string"
-            example: "number=RITM1822110"
+            example: "number=RITM1837042"
 
         - name: "sysparm_fields"
           in: "query"
-          required: false
-          description: "Comma-separated list of fields to return."
+          required: true
           schema:
             type: "string"
-            example: "number,short_description,description,state,approval,stage,assigned_to,assignment_group,requested_for,opened_by,opened_at,sys_created_on,sys_updated_on,due_date,priority,impact,urgency,cat_item,request,comments,work_notes,close_notes,active,upon_approval,upon_reject"
+            default: "number,short_description,state,approval,assigned_to,assignment_group,requested_for,opened_by,opened_at,sys_created_on,sys_updated_on,priority,cat_item,request,active"
 
         - name: "sysparm_limit"
           in: "query"
-          required: false
-          description: "Maximum number of records to return."
+          required: true
           schema:
             type: "integer"
             default: 1
-            minimum: 1
-            maximum: 100
+            enum:
+              - 1
 
         - name: "sysparm_display_value"
           in: "query"
-          required: false
-          description: "Return display values instead of raw sys_ids."
+          required: true
           schema:
             type: "string"
+            default: "true"
             enum:
               - "true"
-              - "false"
-              - "all"
-            default: "true"
 
         - name: "sysparm_exclude_reference_link"
           in: "query"
-          required: false
-          description: "Exclude reference links from returned reference fields."
+          required: true
           schema:
             type: "string"
+            default: "true"
             enum:
               - "true"
-              - "false"
-            default: "true"
 
       responses:
         "200":
@@ -70,16 +60,4 @@ paths:
             application/json:
               schema:
                 type: "object"
-                properties:
-                  result:
-                    type: "array"
-                    items:
-                      type: "object"
-                      additionalProperties: true
-
-        "401":
-          description: "Authentication failed."
-        "403":
-          description: "Forbidden by ServiceNow ACL."
-        "404":
-          description: "Endpoint not found."
+                additionalProperties: true
