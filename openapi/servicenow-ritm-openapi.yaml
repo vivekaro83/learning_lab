@@ -7,7 +7,6 @@ servers:
   - url: "https://stgservice-management.wolterskluwer.com/api/now"
 
 paths:
-
   /table/sc_req_item:
     get:
       operationId: "getRITMDetails"
@@ -19,14 +18,12 @@ paths:
           schema:
             type: "string"
             example: "number=RITM1873527"
-
         - name: "sysparm_fields"
           in: "query"
           required: true
           schema:
             type: "string"
-            default: "sys_id,number,short_description,description,state,approval,stage,assigned_to,assignment_group,requested_for,opened_by,opened_at,sys_created_on,sys_updated_on,due_date,priority,impact,urgency,cat_item,request,comments,work_notes,close_notes,active,upon_approval,upon_reject"
-
+            default: "number,sys_id,short_description,state,approval,assigned_to,assignment_group,requested_for,opened_by,opened_at,sys_created_on,sys_updated_on,priority,cat_item,request,active"
         - name: "sysparm_limit"
           in: "query"
           required: true
@@ -35,7 +32,6 @@ paths:
             default: 1
             enum:
               - 1
-
         - name: "sysparm_display_value"
           in: "query"
           required: true
@@ -44,7 +40,6 @@ paths:
             default: "true"
             enum:
               - "true"
-
         - name: "sysparm_exclude_reference_link"
           in: "query"
           required: true
@@ -53,10 +48,9 @@ paths:
             default: "true"
             enum:
               - "true"
-
       responses:
         "200":
-          description: "Matching RITM records including sys_id."
+          description: "Matching RITM record."
           content:
             application/json:
               schema:
@@ -66,8 +60,7 @@ paths:
   /table/sc_task:
     get:
       operationId: "getCatalogTasks"
-      summary: "Get all catalog tasks linked to a RITM by sys_id"
-      description: "Queries sc_task using request_item=<RITM_SYS_ID>. Use the sys_id returned by getRITMDetails, not the RITM number. Count items in the result array for total task count."
+      summary: "Get all catalog tasks linked to a RITM using its sys_id"
       parameters:
         - name: "sysparm_query"
           in: "query"
@@ -75,42 +68,31 @@ paths:
           schema:
             type: "string"
             example: "request_item=8557930c3b7c0750a4881f0864e45aa5"
-
         - name: "sysparm_fields"
           in: "query"
-          required: false
+          required: true
           schema:
             type: "string"
-            default: "number,short_description,description,state,assignment_group,assigned_to,opened_by,opened_at,closed_at,closed_by,request_item,active,priority,sys_id"
-
+            default: "number,short_description,state,assigned_to,assignment_group,sys_id"
         - name: "sysparm_limit"
           in: "query"
-          required: false
+          required: true
           schema:
             type: "integer"
             default: 100
-
+            enum:
+              - 100
         - name: "sysparm_display_value"
           in: "query"
-          required: false
+          required: true
           schema:
             type: "string"
             default: "false"
             enum:
               - "false"
-
-        - name: "sysparm_exclude_reference_link"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-            default: "true"
-            enum:
-              - "true"
-
       responses:
         "200":
-          description: "All catalog tasks linked to the RITM sys_id."
+          description: "List of catalog tasks linked to the RITM."
           content:
             application/json:
               schema:
