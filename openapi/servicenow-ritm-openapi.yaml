@@ -7,6 +7,7 @@ servers:
   - url: "https://stgservice-management.wolterskluwer.com/api/now"
 
 paths:
+
   /table/sc_req_item:
     get:
       operationId: "getRITMDetails"
@@ -24,7 +25,7 @@ paths:
           required: true
           schema:
             type: "string"
-            default: "number,short_description,state,approval,assigned_to,assignment_group,requested_for,opened_by,opened_at,sys_created_on,sys_updated_on,priority,cat_item,request,active"
+            default: "number,short_description,description,state,approval,stage,assigned_to,assignment_group,requested_for,opened_by,opened_at,sys_created_on,sys_updated_on,due_date,priority,impact,urgency,cat_item,request,comments,work_notes,close_notes,active,upon_approval,upon_reject"
 
         - name: "sysparm_limit"
           in: "query"
@@ -56,6 +57,60 @@ paths:
       responses:
         "200":
           description: "Matching RITM records."
+          content:
+            application/json:
+              schema:
+                type: "object"
+                additionalProperties: true
+
+  /table/sc_task:
+    get:
+      operationId: "getCatalogTasks"
+      summary: "Get catalog tasks linked to a RITM"
+      description: "Queries the sc_task table to retrieve all catalog tasks associated with a given RITM number. Count the items in the result array to get the total number of catalog tasks."
+      parameters:
+        - name: "sysparm_query"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            example: "request_item.number=RITM1837527"
+
+        - name: "sysparm_fields"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "number,short_description,state,assignment_group,assigned_to,request_item,active,priority"
+
+        - name: "sysparm_limit"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            default: 100
+
+        - name: "sysparm_display_value"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "true"
+            enum:
+              - "true"
+
+        - name: "sysparm_exclude_reference_link"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "true"
+            enum:
+              - "true"
+
+      responses:
+        "200":
+          description: "Catalog tasks linked to the RITM."
           content:
             application/json:
               schema:
